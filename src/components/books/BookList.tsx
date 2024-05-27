@@ -49,9 +49,8 @@ export default function BookList({ books, userId }: Props) {
     <>
       <Grid>
         {books?.map((book) => (
-          <Grid.Col span={3}>
+          <Grid.Col key={book.id} span={4}>
             <BookItem
-              key={book.id}
               book={book}
               isOwnBook={userId === book.listedById}
               onUpdateClick={(book: Book) => {

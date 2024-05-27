@@ -85,9 +85,8 @@ export default function BookList({
     <>
       <Grid>
         {exchanges?.map((exchange) => (
-          <Grid.Col span={4}>
+          <Grid.Col key={exchange.id} span={4}>
             <ExchangeItem
-              key={exchange.id}
               exchange={exchange}
               userInitiatedExchange={userInitiatedExchange}
               onUpdateOrAcceptClick={
