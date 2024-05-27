@@ -1,5 +1,5 @@
 import BookList from '../components/books/BookList';
 
-export default function Home() {
+export default function Page() {
   return <BookList />;
 }
