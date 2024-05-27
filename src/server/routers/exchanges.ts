@@ -35,6 +35,7 @@ export const exchangesRouter = router({
       })
     )
     .mutation(async ({ input }) => {
+      // TODO: if exchange offer exists for opposite direction, should auto accept
       const exchange = await prisma.exchange.create({
         data: {
           leftBookId: input.leftBookId,

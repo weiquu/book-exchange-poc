@@ -18,6 +18,7 @@ type Props = Readonly<{
   isOwnBook: boolean;
   onUpdateClick: (book: Book) => void;
   onDeleteClick: (book: Book) => void;
+  onExchangeClick: (book: Book) => void;
 }>;
 
 export default function BookItem({
@@ -25,6 +26,7 @@ export default function BookItem({
   isOwnBook,
   onUpdateClick,
   onDeleteClick,
+  onExchangeClick,
 }: Props) {
   const { data: lister } = trpc.users.getUserById.useQuery({
     id: book.listedById,
@@ -50,7 +52,7 @@ export default function BookItem({
           <Text size="sm">
             Posted by <Anchor href="/">{lister?.name}</Anchor>
           </Text>
-          <Button onClick={() => console.info("click!")}>Offer Exchange</Button>
+          <Button onClick={() => onExchangeClick(book)}>Offer Exchange</Button>
         </Group>
       )}
     </Card>

@@ -5,10 +5,11 @@ import BookItem from "./BookItem";
 import { trpc } from "../../hooks/trpc";
 
 import "@mantine/core/styles.css";
-import { Button, Container, Dialog, Group, Modal, Text } from "@mantine/core";
+import { Button, Container, Group, Modal, Text } from "@mantine/core";
 import UpdateBookForm from "./UpdateBookForm";
 import { useDisclosure } from "@mantine/hooks";
 import { useState } from "react";
+import OfferExchangeForm from "./OfferExchangeForm";
 
 type Props = Readonly<{
   books?: Book[];
@@ -36,6 +37,10 @@ export default function BookList({ books, userId }: Props) {
     },
   });
 
+  const [exchangeOpened, { open: exchangeOpen, close: exchangeClose }] =
+    useDisclosure(false);
+  const [exchangeBook, setExchangeBook] = useState<Book | null>(null);
+
   const deleteBook = (bookId: string) => {
     deleteBookMutation.mutateAsync({ id: bookId });
   };
@@ -55,6 +60,10 @@ export default function BookList({ books, userId }: Props) {
             onDeleteClick={(book: Book) => {
               setSelectedBook(book);
               deleteOpen();
+            }}
+            onExchangeClick={(book: Book) => {
+              setExchangeBook(book);
+              exchangeOpen();
             }}
           ></BookItem>
         ))}
@@ -87,6 +96,21 @@ export default function BookList({ books, userId }: Props) {
               Delete
             </Button>
           </Group>
+        </Modal>
+      )}
+
+      {exchangeBook && (
+        <Modal
+          opened={exchangeOpened}
+          withCloseButton
+          onClose={exchangeClose}
+          title="Offer Exchange"
+        >
+          <OfferExchangeForm
+            userId={userId}
+            selectedBook={exchangeBook}
+            onSubmit={exchangeClose}
+          />
         </Modal>
       )}
     </>
