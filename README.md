@@ -1,5 +1,7 @@
 # Peer-to-Peer Book Exchange Platform
 
+This project is a POC for a peer-to-peer book exchange platform. The solution is a web application, where users can post their book listings for other users to view. Exchange offers can then be made between users based on their book listings. Refer below for a more elaborated list of features and future extensions.
+
 ## Setup Instructions
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
