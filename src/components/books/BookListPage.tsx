@@ -16,15 +16,11 @@ export default function BookListPage() {
     redirect("/login");
   }
   const user = useContext(UserContext);
-  if (!user) {
-    // TODO: I believe this is causing a second reload
-    redirect("/login");
-  }
 
   const { isLoading: isLoadingAll, data: allBooks } =
     trpc.books.getAllListings.useQuery();
   const { isLoading: isLoadingMine, data: myBooks } =
-    trpc.books.getMyListings.useQuery({ userId: user.id });
+    trpc.books.getMyListings.useQuery({ userId: user?.id ?? "" });
 
   const [opened, { open, close }] = useDisclosure(false);
 
@@ -49,7 +45,10 @@ export default function BookListPage() {
         >
           Loading...
         </Text>
-        <BookList books={value === "all" ? allBooks : myBooks} />
+        <BookList
+          books={value === "all" ? allBooks : myBooks}
+          userId={user?.id ?? ""}
+        />
       </Stack>
     );
   }
@@ -68,7 +67,7 @@ export default function BookListPage() {
       </Tabs>
 
       <Modal opened={opened} onClose={close} title="Add Book">
-        <AddBookForm onSubmit={close} userId={user.id} />
+        <AddBookForm onSubmit={close} userId={user?.id ?? ""} />
       </Modal>
     </>
   );

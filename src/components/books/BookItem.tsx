@@ -1,47 +1,58 @@
-'use client';
+"use client";
 
-import { type ChangeEvent } from 'react';
-
-import type { Book } from '@prisma/client';
-
-import '@mantine/core/styles.css';
-
+import { trpc } from "../../hooks/trpc";
+import type { Book } from "@prisma/client";
+import "@mantine/core/styles.css";
 import {
+  Anchor,
   Button,
   Card,
   Divider,
   Group,
   Text,
-  Textarea,
   Title,
-} from '@mantine/core';
-import { useInputState } from '@mantine/hooks';
+} from "@mantine/core";
 
 type Props = Readonly<{
   book: Book;
+  isOwnBook: boolean;
+  onUpdateClick: (book: Book) => void;
+  onDeleteClick: (book: Book) => void;
 }>;
 
-export default function BookItem({ book }: Props) {
+export default function BookItem({
+  book,
+  isOwnBook,
+  onUpdateClick,
+  onDeleteClick,
+}: Props) {
+  const { data: lister } = trpc.users.getUserById.useQuery({
+    id: book.listedById,
+  });
+  // TODO: link to other's profile
+  // TODO: offer exchange
   return (
     <Card mb="md" padding="lg" radius="md" shadow="sm" withBorder={true}>
-      <Group justify="space-between" mb="xs" mt="md">
-        <Title order={3}>Title: {book.title}</Title>
-        <Text size="sm">Posted At: {book.createdAt.toString()}</Text>
-      </Group>
-      <Text size="sm">{book.author}</Text>
+      <Title order={3}>
+        {book.title} by {book.author}
+      </Title>
+      <Text size="sm">TODO: change schema to have book.summary</Text>
       <Divider my="md" />
-      <Textarea
-        autosize={true}
-        label="extra"
-        value='info'
-      />
-      <Group justify="space-between" mb="xs" mt="md">
-        <Button onClick={() => console.info('click!')}>Generate Response</Button>
-      </Group>
-      <Group justify="space-between" mb="xs" mt="md">
-        <Button onClick={() => console.info('click!')}>Update Response</Button>
-        <Button onClick={() => console.info('click!')}>Reply</Button>
-      </Group>
+      {isOwnBook ? (
+        <Group justify="space-between" mb="xs" mt="md">
+          <Button onClick={() => onUpdateClick(book)}>Update Listing</Button>
+          <Button onClick={() => onDeleteClick(book)} color="red">
+            Delete Listing
+          </Button>
+        </Group>
+      ) : (
+        <Group justify="space-between" mb="xs" mt="md">
+          <Text size="sm">
+            Posted by <Anchor href="/">{lister?.name}</Anchor>
+          </Text>
+          <Button onClick={() => console.info("click!")}>Offer Exchange</Button>
+        </Group>
+      )}
     </Card>
   );
 }

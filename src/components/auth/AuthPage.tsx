@@ -19,7 +19,10 @@ export default function AuthPage({ type }: Props) {
   const linkToSignUp = (
     <Text ta="center" size="lg">
       Don't have an account?{" "}
-      <Anchor onClick={() => setAuthType("signUp")}>Sign up</Anchor> now!
+      <Anchor underline="always" onClick={() => setAuthType("signUp")}>
+        Sign up
+      </Anchor>{" "}
+      now!
     </Text>
   );
 

@@ -39,4 +39,34 @@ export const booksRouter = router({
       });
       return book;
     }),
+  updateListing: publicProcedure
+    .input(
+      z.object({
+        id: z.string(),
+        author: z.string(),
+        title: z.string(),
+      })
+    )
+    .mutation(async ({ input }) => {
+      const book = await prisma.book.update({
+        where: { id: input.id },
+        data: {
+          title: input.title,
+          author: input.author,
+        },
+      });
+      return book;
+    }),
+  deleteListing: publicProcedure
+    .input(
+      z.object({
+        id: z.string(),
+      })
+    )
+    .mutation(async ({ input }) => {
+      const book = await prisma.book.delete({
+        where: { id: input.id },
+      });
+      return book;
+    }),
 });
