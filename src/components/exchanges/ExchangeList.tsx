@@ -45,9 +45,41 @@ export default function BookList({
     deleteExchangeMutation.mutateAsync({ id: exchangeId });
   };
 
-  //   const [exchangeOpened, { open: exchangeOpen, close: exchangeClose }] =
-  //     useDisclosure(false);
-  //   const [exchangeBook, setExchangeBook] = useState<Book | null>(null);
+  const [acceptOpened, { open: acceptOpen, close: acceptClose }] =
+    useDisclosure(false);
+  const [declineOpened, { open: declineOpen, close: declineClose }] =
+    useDisclosure(false);
+  const [selectedIncomingExchange, setSelectedIncomingExchange] =
+    useState<ExchangeWithBookDetails | null>(null);
+
+  const acceptExchangeMutation =
+    trpc.exchanges.updateExchangeStatus.useMutation({
+      onSuccess: () => {
+        utils.exchanges.getMyExchanges.invalidate();
+        acceptClose();
+      },
+      onError: () => {
+        // TODO: show error message
+        console.error("Failed to accept exchange");
+      },
+    });
+  const acceptExchange = (exchangeId: string) => {
+    acceptExchangeMutation.mutateAsync({ id: exchangeId, status: "ACCEPTED" });
+  };
+  const declineExchangeMutation =
+    trpc.exchanges.updateExchangeStatus.useMutation({
+      onSuccess: () => {
+        utils.exchanges.getMyExchanges.invalidate();
+        declineClose();
+      },
+      onError: () => {
+        // TODO: show error message
+        console.error("Failed to decline exchange");
+      },
+    });
+  const declineExchange = (exchangeId: string) => {
+    declineExchangeMutation.mutateAsync({ id: exchangeId, status: "REJECTED" });
+  };
 
   return (
     <>
@@ -57,14 +89,28 @@ export default function BookList({
             key={exchange.id}
             exchange={exchange}
             userInitiatedExchange={userInitiatedExchange}
-            onUpdateOrAcceptClick={(exchange: ExchangeWithBookDetails) => {
-              setSelectedOutgoingExchange(exchange);
-              updateOpen();
-            }}
-            onDeleteOrDeclineClick={(exchange: ExchangeWithBookDetails) => {
-              setSelectedOutgoingExchange(exchange);
-              deleteOpen();
-            }}
+            onUpdateOrAcceptClick={
+              userInitiatedExchange
+                ? (exchange: ExchangeWithBookDetails) => {
+                    setSelectedOutgoingExchange(exchange);
+                    updateOpen();
+                  }
+                : (exchange: ExchangeWithBookDetails) => {
+                    setSelectedIncomingExchange(exchange);
+                    acceptOpen();
+                  }
+            }
+            onDeleteOrDeclineClick={
+              userInitiatedExchange
+                ? (exchange: ExchangeWithBookDetails) => {
+                    setSelectedOutgoingExchange(exchange);
+                    deleteOpen();
+                  }
+                : (exchange: ExchangeWithBookDetails) => {
+                    setSelectedIncomingExchange(exchange);
+                    declineOpen();
+                  }
+            }
           ></ExchangeItem>
         ))}
       </Container>
@@ -100,6 +146,50 @@ export default function BookList({
               color="red"
             >
               Delete
+            </Button>
+          </Group>
+        </Modal>
+      )}
+
+      {selectedIncomingExchange && (
+        <Modal
+          opened={acceptOpened}
+          withCloseButton
+          onClose={acceptClose}
+          title="Accept Exchange Offer"
+        >
+          <Text>Are you sure you want to accept the exchange offer?</Text>
+          <Group justify="space-between" mb="xs" mt="md">
+            <Button onClick={acceptClose} color="gray">
+              Cancel
+            </Button>
+            <Button
+              onClick={() => acceptExchange(selectedIncomingExchange.id)}
+              color="green"
+            >
+              Accept
+            </Button>
+          </Group>
+        </Modal>
+      )}
+
+      {selectedIncomingExchange && (
+        <Modal
+          opened={declineOpened}
+          withCloseButton
+          onClose={declineClose}
+          title="Decline Exchange Offer"
+        >
+          <Text>Are you sure you want to decline the exchange offer?</Text>
+          <Group justify="space-between" mb="xs" mt="md">
+            <Button onClick={declineClose} color="gray">
+              Cancel
+            </Button>
+            <Button
+              onClick={() => declineExchange(selectedIncomingExchange.id)}
+              color="red"
+            >
+              Decline
             </Button>
           </Group>
         </Modal>

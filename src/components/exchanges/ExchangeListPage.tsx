@@ -71,7 +71,9 @@ export default function BookListPage() {
             <ExchangeList
               exchanges={
                 exchanges?.filter(
-                  (exchange) => exchange.requesterBook.listedById === user?.id
+                  (exchange) =>
+                    exchange.requesterBook.listedById === user?.id &&
+                    (showAllExchanges || exchange.status === "PENDING")
                 ) ?? []
               }
               userInitiatedExchange={true}
@@ -89,7 +91,9 @@ export default function BookListPage() {
             <ExchangeList
               exchanges={
                 exchanges?.filter(
-                  (exchange) => exchange.requesterBook.listedById !== user?.id
+                  (exchange) =>
+                    exchange.requesterBook.listedById !== user?.id &&
+                    exchange.status === "PENDING"
                 ) ?? []
               }
               userInitiatedExchange={false}

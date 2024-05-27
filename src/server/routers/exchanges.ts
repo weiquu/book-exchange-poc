@@ -56,7 +56,7 @@ export const exchangesRouter = router({
           status: input.status,
         },
       });
-      // TODO: if exchange is accepted, update books - isAvailable for both should be false
+      // TODO: if exchange is accepted, update books - isAvailable for both should be false, all exchanges involving the books should be rejected
       return exchange;
     }),
   updateExchangeBook: publicProcedure
