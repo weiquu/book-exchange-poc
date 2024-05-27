@@ -3,7 +3,7 @@
 import ExchangeItem from "./ExchangeItem";
 import { trpc } from "../../hooks/trpc";
 import "@mantine/core/styles.css";
-import { Button, Container, Group, Modal, Text } from "@mantine/core";
+import { Button, Group, Modal, Text, Grid } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { useState } from "react";
 import React from "react";
@@ -83,37 +83,39 @@ export default function BookList({
 
   return (
     <>
-      <Container>
+      <Grid>
         {exchanges?.map((exchange) => (
-          <ExchangeItem
-            key={exchange.id}
-            exchange={exchange}
-            userInitiatedExchange={userInitiatedExchange}
-            onUpdateOrAcceptClick={
-              userInitiatedExchange
-                ? (exchange: ExchangeWithBookDetails) => {
-                    setSelectedOutgoingExchange(exchange);
-                    updateOpen();
-                  }
-                : (exchange: ExchangeWithBookDetails) => {
-                    setSelectedIncomingExchange(exchange);
-                    acceptOpen();
-                  }
-            }
-            onDeleteOrDeclineClick={
-              userInitiatedExchange
-                ? (exchange: ExchangeWithBookDetails) => {
-                    setSelectedOutgoingExchange(exchange);
-                    deleteOpen();
-                  }
-                : (exchange: ExchangeWithBookDetails) => {
-                    setSelectedIncomingExchange(exchange);
-                    declineOpen();
-                  }
-            }
-          ></ExchangeItem>
+          <Grid.Col span={4}>
+            <ExchangeItem
+              key={exchange.id}
+              exchange={exchange}
+              userInitiatedExchange={userInitiatedExchange}
+              onUpdateOrAcceptClick={
+                userInitiatedExchange
+                  ? (exchange: ExchangeWithBookDetails) => {
+                      setSelectedOutgoingExchange(exchange);
+                      updateOpen();
+                    }
+                  : (exchange: ExchangeWithBookDetails) => {
+                      setSelectedIncomingExchange(exchange);
+                      acceptOpen();
+                    }
+              }
+              onDeleteOrDeclineClick={
+                userInitiatedExchange
+                  ? (exchange: ExchangeWithBookDetails) => {
+                      setSelectedOutgoingExchange(exchange);
+                      deleteOpen();
+                    }
+                  : (exchange: ExchangeWithBookDetails) => {
+                      setSelectedIncomingExchange(exchange);
+                      declineOpen();
+                    }
+              }
+            ></ExchangeItem>
+          </Grid.Col>
         ))}
-      </Container>
+      </Grid>
 
       {selectedOutgoingExchange && (
         <Modal

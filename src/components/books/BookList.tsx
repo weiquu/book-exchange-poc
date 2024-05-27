@@ -5,7 +5,7 @@ import BookItem from "./BookItem";
 import { trpc } from "../../hooks/trpc";
 
 import "@mantine/core/styles.css";
-import { Button, Container, Group, Modal, Text } from "@mantine/core";
+import { Button, Container, Group, Modal, Text, Grid } from "@mantine/core";
 import UpdateBookForm from "./UpdateBookForm";
 import { useDisclosure } from "@mantine/hooks";
 import { useState } from "react";
@@ -47,27 +47,29 @@ export default function BookList({ books, userId }: Props) {
 
   return (
     <>
-      <Container>
+      <Grid>
         {books?.map((book) => (
-          <BookItem
-            key={book.id}
-            book={book}
-            isOwnBook={userId === book.listedById}
-            onUpdateClick={(book: Book) => {
-              setSelectedBook(book);
-              updateOpen();
-            }}
-            onDeleteClick={(book: Book) => {
-              setSelectedBook(book);
-              deleteOpen();
-            }}
-            onExchangeClick={(book: Book) => {
-              setExchangeBook(book);
-              exchangeOpen();
-            }}
-          ></BookItem>
+          <Grid.Col span={3}>
+            <BookItem
+              key={book.id}
+              book={book}
+              isOwnBook={userId === book.listedById}
+              onUpdateClick={(book: Book) => {
+                setSelectedBook(book);
+                updateOpen();
+              }}
+              onDeleteClick={(book: Book) => {
+                setSelectedBook(book);
+                deleteOpen();
+              }}
+              onExchangeClick={(book: Book) => {
+                setExchangeBook(book);
+                exchangeOpen();
+              }}
+            ></BookItem>
+          </Grid.Col>
         ))}
-      </Container>
+      </Grid>
 
       {selectedBook && (
         <Modal
