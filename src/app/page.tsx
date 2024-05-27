@@ -1,5 +1,5 @@
-import BookList from '../components/books/BookList';
+import LandingPage from '../components/landing/LandingPage';
 
 export default function Page() {
-  return <BookList />;
+  return <LandingPage />;
 }
