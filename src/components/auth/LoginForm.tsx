@@ -32,6 +32,7 @@ export default function LoginForm() {
     }
   );
 
+  // TODO: bug - user needs to press submit twice
   function validateLogin(values: typeof form.values) {
     setSubmittedValues(values);
     refetch();
@@ -45,7 +46,8 @@ export default function LoginForm() {
     if (!data) {
       console.error("Invalid login"); // TODO: show error message
     } else {
-      redirect("/"); // TODO: redirect to /books or smth
+      localStorage.setItem("userId", data.id); // TODO: use token or something
+      redirect("/books");
     }
   }, [data]);
 

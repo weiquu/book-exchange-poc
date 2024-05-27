@@ -1,13 +1,12 @@
-'use client';
+"use client";
 
-import type { ReactNode } from 'react';
+import type { ReactNode } from "react";
 
-import { trpc } from '../../hooks/trpc';
+import { trpc } from "../../hooks/trpc";
 
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { httpBatchLink } from '@trpc/client/links/httpBatchLink';
-import superjson from 'superjson';
-
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { httpBatchLink } from "@trpc/client/links/httpBatchLink";
+import superjson from "superjson";
 
 type Props = Readonly<{
   children: ReactNode;
@@ -22,13 +21,13 @@ const queryClient = new QueryClient({
 });
 
 const trpcClient = trpc.createClient({
-    links: [
-      httpBatchLink({
-        url: '/api/trpc',
-        transformer: superjson,
-      }),
-    ],
-  });
+  links: [
+    httpBatchLink({
+      url: "/api/trpc",
+      transformer: superjson,
+    }),
+  ],
+});
 
 export default function TrpcClientProvider({ children }: Props) {
   return (
