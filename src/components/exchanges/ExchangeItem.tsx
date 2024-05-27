@@ -1,7 +1,7 @@
 "use client";
 
 import { trpc } from "../../hooks/trpc";
-import type { Book } from "@prisma/client";
+import type { Exchange } from "@prisma/client";
 import "@mantine/core/styles.css";
 import {
   Anchor,
@@ -12,29 +12,31 @@ import {
   Text,
   Title,
 } from "@mantine/core";
+import React from "react";
 
 type Props = Readonly<{
-  book: Book;
-  isOwnBook: boolean;
-  onUpdateClick: (book: Book) => void;
-  onDeleteClick: (book: Book) => void;
-  onExchangeClick: (book: Book) => void;
+  exchange: Exchange;
+  userInitiatedExchange: boolean;
+  //   onUpdateClick: (book: Book) => void;
+  //   onDeleteClick: (book: Book) => void;
+  //   onExchangeClick: (book: Book) => void;
 }>;
 
-export default function BookItem({
-  book,
-  isOwnBook,
-  onUpdateClick,
-  onDeleteClick,
-  onExchangeClick,
-}: Props) {
-  const { data: lister } = trpc.users.getUserById.useQuery({
-    id: book.listedById,
-  });
+export default function ExchangeItem({
+  exchange,
+  userInitiatedExchange,
+}: //   onUpdateClick,
+//   onDeleteClick,
+//   onExchangeClick,
+Props) {
+  // const { data: lister } = trpc.users.getUserById.useQuery({
+  //   id: book.listedById,
+  // });
   // TODO: link to other's profile
   return (
     <Card mb="md" padding="lg" radius="md" shadow="sm" withBorder={true}>
-      <Title order={3}>
+      TODO: info on the exchange
+      {/* <Title order={3}>
         {book.title} by {book.author}
       </Title>
       <Text size="sm">{book.summary}</Text>
@@ -53,7 +55,7 @@ export default function BookItem({
           </Text>
           <Button onClick={() => onExchangeClick(book)}>Offer Exchange</Button>
         </Group>
-      )}
+      )} */}
     </Card>
   );
 }

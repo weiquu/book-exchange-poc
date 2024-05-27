@@ -22,10 +22,7 @@ export const exchangesRouter = router({
           rightBook: true,
         },
       });
-      return [
-        exchanges.filter((exchange) => exchange.status === "PENDING"),
-        exchanges.filter((exchange) => exchange.status !== "PENDING"),
-      ];
+      return exchanges;
     }),
   createExchange: publicProcedure
     .input(
