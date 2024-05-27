@@ -47,28 +47,32 @@ export default function BookList({ books, userId }: Props) {
 
   return (
     <>
-      <Grid>
-        {books?.map((book) => (
-          <Grid.Col key={book.id} span={4}>
-            <BookItem
-              book={book}
-              isOwnBook={userId === book.listedById}
-              onUpdateClick={(book: Book) => {
-                setSelectedBook(book);
-                updateOpen();
-              }}
-              onDeleteClick={(book: Book) => {
-                setSelectedBook(book);
-                deleteOpen();
-              }}
-              onExchangeClick={(book: Book) => {
-                setExchangeBook(book);
-                exchangeOpen();
-              }}
-            ></BookItem>
-          </Grid.Col>
-        ))}
-      </Grid>
+      {books?.length === 0 ? (
+        <Text>No Books Found</Text>
+      ) : (
+        <Grid>
+          {books?.map((book) => (
+            <Grid.Col key={book.id} span={4}>
+              <BookItem
+                book={book}
+                isOwnBook={userId === book.listedById}
+                onUpdateClick={(book: Book) => {
+                  setSelectedBook(book);
+                  updateOpen();
+                }}
+                onDeleteClick={(book: Book) => {
+                  setSelectedBook(book);
+                  deleteOpen();
+                }}
+                onExchangeClick={(book: Book) => {
+                  setExchangeBook(book);
+                  exchangeOpen();
+                }}
+              ></BookItem>
+            </Grid.Col>
+          ))}
+        </Grid>
+      )}
 
       {selectedBook && (
         <Modal

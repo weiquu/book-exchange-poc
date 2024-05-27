@@ -56,7 +56,40 @@ export const exchangesRouter = router({
           status: input.status,
         },
       });
-      // TODO: if exchange is accepted, update books - isAvailable for both should be false, all exchanges involving the books should be rejected
+
+      if (input.status === "REJECTED") {
+        return exchange;
+      }
+
+      await Promise.all([
+        prisma.book.update({
+          where: { id: exchange.requestedBookId },
+          data: {
+            isAvailable: false,
+          },
+        }),
+        prisma.book.update({
+          where: { id: exchange.requesterBookId },
+          data: {
+            isAvailable: false,
+          },
+        }),
+        prisma.exchange.updateMany({
+          where: {
+            OR: [
+              { requestedBookId: exchange.requestedBookId },
+              { requesterBookId: exchange.requestedBookId },
+              { requestedBookId: exchange.requesterBookId },
+              { requesterBookId: exchange.requesterBookId },
+            ],
+            status: "PENDING",
+          },
+          data: {
+            status: "REJECTED",
+          },
+        }),
+      ]);
+
       return exchange;
     }),
   updateExchangeBook: publicProcedure

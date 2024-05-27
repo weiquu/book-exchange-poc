@@ -16,7 +16,7 @@ type Props = Readonly<{
   userId: string;
 }>;
 
-export default function BookList({
+export default function ExchangeList({
   exchanges,
   userInitiatedExchange,
   userId,
@@ -83,38 +83,42 @@ export default function BookList({
 
   return (
     <>
-      <Grid>
-        {exchanges?.map((exchange) => (
-          <Grid.Col key={exchange.id} span={4}>
-            <ExchangeItem
-              exchange={exchange}
-              userInitiatedExchange={userInitiatedExchange}
-              onUpdateOrAcceptClick={
-                userInitiatedExchange
-                  ? (exchange: ExchangeWithBookDetails) => {
-                      setSelectedOutgoingExchange(exchange);
-                      updateOpen();
-                    }
-                  : (exchange: ExchangeWithBookDetails) => {
-                      setSelectedIncomingExchange(exchange);
-                      acceptOpen();
-                    }
-              }
-              onDeleteOrDeclineClick={
-                userInitiatedExchange
-                  ? (exchange: ExchangeWithBookDetails) => {
-                      setSelectedOutgoingExchange(exchange);
-                      deleteOpen();
-                    }
-                  : (exchange: ExchangeWithBookDetails) => {
-                      setSelectedIncomingExchange(exchange);
-                      declineOpen();
-                    }
-              }
-            ></ExchangeItem>
-          </Grid.Col>
-        ))}
-      </Grid>
+      {exchanges?.length === 0 ? (
+        <Text>No Exchanges Found</Text>
+      ) : (
+        <Grid>
+          {exchanges?.map((exchange) => (
+            <Grid.Col key={exchange.id} span={4}>
+              <ExchangeItem
+                exchange={exchange}
+                userInitiatedExchange={userInitiatedExchange}
+                onUpdateOrAcceptClick={
+                  userInitiatedExchange
+                    ? (exchange: ExchangeWithBookDetails) => {
+                        setSelectedOutgoingExchange(exchange);
+                        updateOpen();
+                      }
+                    : (exchange: ExchangeWithBookDetails) => {
+                        setSelectedIncomingExchange(exchange);
+                        acceptOpen();
+                      }
+                }
+                onDeleteOrDeclineClick={
+                  userInitiatedExchange
+                    ? (exchange: ExchangeWithBookDetails) => {
+                        setSelectedOutgoingExchange(exchange);
+                        deleteOpen();
+                      }
+                    : (exchange: ExchangeWithBookDetails) => {
+                        setSelectedIncomingExchange(exchange);
+                        declineOpen();
+                      }
+                }
+              ></ExchangeItem>
+            </Grid.Col>
+          ))}
+        </Grid>
+      )}
 
       {selectedOutgoingExchange && (
         <Modal

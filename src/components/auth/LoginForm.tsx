@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import { Button, TextInput, PasswordInput } from "@mantine/core";
 import { isEmail, isNotEmpty, useForm } from "@mantine/form";
 import { trpc } from "../../hooks/trpc";
-import { useState, useEffect, use } from "react";
+import { useState, useEffect } from "react";
 import "@mantine/core/styles.css";
 import React from "react";
 
@@ -33,12 +33,6 @@ export default function LoginForm() {
     }
   );
 
-  // TODO: bug - user needs to press submit twice
-  function validateLogin(values: typeof form.values) {
-    setSubmittedValues(values);
-    refetch();
-  }
-
   useEffect(() => {
     if (!submittedValues) {
       return;
@@ -52,8 +46,16 @@ export default function LoginForm() {
     }
   }, [data]);
 
+  useEffect(() => {
+    if (!submittedValues) {
+      return;
+    }
+
+    refetch();
+  }, [submittedValues]);
+
   return (
-    <form onSubmit={form.onSubmit(validateLogin)}>
+    <form onSubmit={form.onSubmit(setSubmittedValues)}>
       <TextInput
         {...form.getInputProps("email")}
         label="Email"
@@ -62,10 +64,10 @@ export default function LoginForm() {
       <PasswordInput
         {...form.getInputProps("password")}
         mt="md"
-        label="password"
+        label="Password"
         placeholder="password"
       />
-      <Button type="submit" mt="md">
+      <Button fullWidth type="submit" mt="md">
         Submit
       </Button>
     </form>

@@ -4,7 +4,11 @@ import prisma from "../../server/prisma";
 
 export const booksRouter = router({
   getAllListings: publicProcedure.query(async () => {
-    const books = await prisma.book.findMany();
+    const books = await prisma.book.findMany({
+      where: {
+        isAvailable: true,
+      },
+    });
     return books;
   }),
   getMyListings: publicProcedure
@@ -17,6 +21,7 @@ export const booksRouter = router({
       const books = await prisma.book.findMany({
         where: {
           listedById: input.userId,
+          isAvailable: true,
         },
       });
       return books;

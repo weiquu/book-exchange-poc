@@ -1,9 +1,9 @@
 "use client";
 
-import { Anchor, AppShell, Container, Group } from "@mantine/core";
+import { Anchor, AppShell, Button, Container, Group } from "@mantine/core";
 import "@mantine/core/styles.css";
 import React from "react";
-import { usePathname, redirect } from "next/navigation";
+import { usePathname, redirect, useRouter } from "next/navigation";
 
 type NavbarTabCategory = "books" | "exchanges" | "profile";
 type NavbarTab = Readonly<{
@@ -22,6 +22,7 @@ export default function Navbar({ children }: Props) {
     redirect("/login");
   }
   const pathname = usePathname();
+  const router = useRouter();
   const navbarTabs: NavbarTab[] = [
     {
       category: "books",
@@ -46,19 +47,29 @@ export default function Navbar({ children }: Props) {
   return (
     <AppShell header={{ height: 60 }} padding="md">
       <AppShell.Header>
-        <Group ml="md" mt={15} gap="lg">
-          {navbarTabs.map((tab) => (
-            <Anchor
-              key={tab.category}
-              size="xl"
-              ml="md"
-              href={tab.href}
-              fw={tab.isActive ? 900 : undefined}
-              td={tab.isActive ? "underline" : undefined}
-            >
-              {tab.label}
-            </Anchor>
-          ))}
+        <Group mx="md" mt={15} justify="space-between" align="center">
+          <Group gap="lg">
+            {navbarTabs.map((tab) => (
+              <Anchor
+                key={tab.category}
+                size="xl"
+                ml="md"
+                href={tab.href}
+                fw={tab.isActive ? 900 : undefined}
+                td={tab.isActive ? "underline" : undefined}
+              >
+                {tab.label}
+              </Anchor>
+            ))}
+          </Group>
+          <Button
+            onClick={() => {
+              localStorage.removeItem("userId");
+              router.push("/");
+            }}
+          >
+            Logout
+          </Button>
         </Group>
       </AppShell.Header>
       <AppShell.Main>

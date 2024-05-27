@@ -34,10 +34,10 @@ model Book {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  user User @relation(fields: [listedById], references: [id])
+  user User @relation(fields: [listedById], references: [id], onDelete: Cascade)
 
-  exchangesRequested Exchange? @relation("requestedBook")
-  exchangesRequester Exchange? @relation("requesterBook")
+  exchangesRequested Exchange[] @relation("requestedBook")
+  exchangesRequester Exchange[] @relation("requesterBook")
 }
 
 enum ExchangeStatus {
@@ -48,12 +48,14 @@ enum ExchangeStatus {
 
 model Exchange {
   id              String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  requestedBookId String         @unique @db.Uuid
-  requesterBookId String         @unique @db.Uuid
+  requestedBookId String         @db.Uuid
+  requesterBookId String         @db.Uuid
   status          ExchangeStatus @default(PENDING)
   createdAt       DateTime       @default(now())
   updatedAt       DateTime       @updatedAt
 
-  requestedBook Book @relation(fields: [requestedBookId], references: [id], name: "requestedBook")
-  requesterBook Book @relation(fields: [requesterBookId], references: [id], name: "requesterBook")
+  requestedBook Book @relation(fields: [requestedBookId], references: [id], onDelete: Cascade, name: "requestedBook")
+  requesterBook Book @relation(fields: [requesterBookId], references: [id], onDelete: Cascade, name: "requesterBook")
+
+  @@unique([requestedBookId, requesterBookId], name: "exchangeIdentifier")
 }

@@ -39,16 +39,17 @@ export default function SignUpForm() {
       />
       <TextInput
         {...form.getInputProps("email")}
+        mt="md"
         label="Email"
         placeholder="email@email.com"
       />
       <PasswordInput
         {...form.getInputProps("password")}
         mt="md"
-        label="password"
+        label="Password"
         placeholder="password"
       />
-      <Button type="submit" mt="md">
+      <Button fullWidth type="submit" mt="md">
         Submit
       </Button>
     </form>
