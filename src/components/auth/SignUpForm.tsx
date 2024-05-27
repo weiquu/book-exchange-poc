@@ -4,10 +4,22 @@ import { Button, TextInput, PasswordInput } from "@mantine/core";
 import { hasLength, isEmail, useForm } from "@mantine/form";
 import { trpc } from "../../hooks/trpc";
 import React from "react";
+import { useRouter } from "next/navigation";
 import "@mantine/core/styles.css";
 
 export default function SignUpForm() {
-  const createUserMutation = trpc.users.createUser.useMutation();
+  const router = useRouter();
+
+  const createUserMutation = trpc.users.createUser.useMutation({
+    onSuccess: (user) => {
+      localStorage.setItem("userId", user.id); // TODO: use token or something
+      router.push("/books");
+    },
+    onError: (error) => {
+      // TODO: show error message
+      console.error(error);
+    },
+  });
   const form = useForm({
     mode: "uncontrolled",
     initialValues: { name: "", email: "", password: "" },
@@ -19,15 +31,11 @@ export default function SignUpForm() {
   });
 
   function signUp(values: typeof form.values) {
-    const success = createUserMutation.mutateAsync({
+    createUserMutation.mutateAsync({
       name: values.name,
       email: values.email,
       password: values.password,
     });
-
-    // TODO: use onSuccess and onError in the mutation
-    console.info("success", success);
-    // TODO: redirect on success, show error message on failure
   }
 
   return (

@@ -6,7 +6,6 @@ export default function Layout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // TODO: add header
   return (
     <UserProvider>
       <Navbar children={children}></Navbar>

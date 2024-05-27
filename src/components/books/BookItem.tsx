@@ -31,7 +31,6 @@ export default function BookItem({
   const { data: lister } = trpc.users.getUserById.useQuery({
     id: book.listedById,
   });
-  // TODO: link to other's profile
   return (
     <Card mb="md" padding="lg" radius="md" shadow="sm" withBorder={true}>
       <Title order={3}>
@@ -49,7 +48,8 @@ export default function BookItem({
       ) : (
         <Group justify="space-between" mb="xs" mt="md">
           <Text size="sm">
-            Posted by <Anchor href="/">{lister?.name}</Anchor>
+            Posted by{" "}
+            <Anchor href={`/profile/${lister?.id}`}>{lister?.name}</Anchor>
           </Text>
           <Button onClick={() => onExchangeClick(book)}>Offer Exchange</Button>
         </Group>

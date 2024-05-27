@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, TextInput, PasswordInput } from "@mantine/core";
+import { Button, TextInput } from "@mantine/core";
 import { isNotEmpty, useForm } from "@mantine/form";
 import { trpc } from "../../hooks/trpc";
 import "@mantine/core/styles.css";

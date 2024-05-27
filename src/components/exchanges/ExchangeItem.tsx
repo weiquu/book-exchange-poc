@@ -38,7 +38,6 @@ export default function ExchangeItem({
     id: otherBook.listedById,
   });
 
-  // TODO: link to other's profile
   return (
     <Card mb="md" padding="lg" radius="md" shadow="sm" withBorder={true}>
       <Title order={3}>
@@ -47,7 +46,7 @@ export default function ExchangeItem({
             ? "You offered an exchange to "
             : `You ${exchange.status.toLowerCase()} an exchange with `
           : "You received an exchange offer from "}
-        <Anchor href="/">{otherUser?.name}</Anchor>
+        <Anchor href={`/profile/${otherUser?.id}`}>{otherUser?.name}</Anchor>
       </Title>
       <Divider my="md" />
       <Stack gap="xs">
