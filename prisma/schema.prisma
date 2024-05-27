@@ -14,7 +14,7 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(dbgenerated()) @db.Uuid
+  id        String   @id @default(dbgenerated("uuid_generate_v1()")) @db.Uuid
   email     String   @unique
   password  String
   name      String
@@ -25,7 +25,7 @@ model User {
 }
 
 model Book {
-  id          String   @id @default(dbgenerated()) @db.Uuid
+  id          String   @id @default(dbgenerated("uuid_generate_v1()")) @db.Uuid
   title       String
   author      String
   listedById  String   @db.Uuid
@@ -39,7 +39,7 @@ model Book {
 }
 
 model Exchange {
-  id            String   @id @default(dbgenerated()) @db.Uuid
+  id            String   @id @default(dbgenerated("uuid_generate_v1()")) @db.Uuid
   leftBookId    String @unique @db.Uuid
   rightBookId   String @unique @db.Uuid
   createdAt     DateTime @default(now())
