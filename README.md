@@ -16,6 +16,8 @@ Next, create a `.env` file in the root directory, and assign the connection stri
 DATABASE_URL=postgres://postgres.iijwoifgoietrnfipo:ejnrgiofj1ojdsn@aws-0-ap-southeast-1.pooler.supabase.com:5432/postgres
 ```
 
+Then, run `yarn prisma db push` to generate the tables in the database. `yarn prisma migrate dev` might also work, but in my experience there might be some errors.
+
 ### Development Server
 
 First, run `yarn install` to install the dependencies. Then, run the development server with `yarn dev`. Next, open [http://localhost:3000](http://localhost:3000) with your browser to see the result and begin exploring the project.
