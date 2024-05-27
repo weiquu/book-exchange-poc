@@ -26,10 +26,11 @@ export default function AddBookForm({ onSubmit, userId }: Props) {
   });
   const form = useForm({
     mode: "uncontrolled",
-    initialValues: { title: "", author: "" },
+    initialValues: { title: "", author: "", summary: "" },
     validate: {
       title: isNotEmpty("Enter a title"),
       author: isNotEmpty("Enter an author"),
+      summary: isNotEmpty("Enter a summary"),
     },
   });
 
@@ -37,6 +38,7 @@ export default function AddBookForm({ onSubmit, userId }: Props) {
     addBookMutation.mutateAsync({
       title: values.title,
       author: values.author,
+      summary: values.summary,
       userId: userId,
     });
   }
@@ -52,6 +54,11 @@ export default function AddBookForm({ onSubmit, userId }: Props) {
         {...form.getInputProps("author")}
         label="Author"
         placeholder="Author"
+      />
+      <TextInput
+        {...form.getInputProps("summary")}
+        label="Summary"
+        placeholder="Enter a summary of the book"
       />
       <Button type="submit" mt="md">
         Submit

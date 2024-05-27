@@ -14,7 +14,7 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(dbgenerated("uuid_generate_v1()")) @db.Uuid
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   email     String   @unique
   password  String
   name      String
@@ -25,26 +25,35 @@ model User {
 }
 
 model Book {
-  id          String   @id @default(dbgenerated("uuid_generate_v1()")) @db.Uuid
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   title       String
   author      String
+  summary     String
   listedById  String   @db.Uuid
+  isAvailable Boolean  @default(true)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
   user User @relation(fields: [listedById], references: [id])
 
-  exchangesLeft Exchange? @relation("LeftBook")
+  exchangesLeft  Exchange? @relation("LeftBook")
   exchangesRight Exchange? @relation("RightBook")
 }
 
-model Exchange {
-  id            String   @id @default(dbgenerated("uuid_generate_v1()")) @db.Uuid
-  leftBookId    String @unique @db.Uuid
-  rightBookId   String @unique @db.Uuid
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+enum ExchangeStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+}
 
-  leftBook Book @relation(fields: [leftBookId], references: [id], name: "LeftBook")
+model Exchange {
+  id          String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  leftBookId  String         @unique @db.Uuid
+  rightBookId String         @unique @db.Uuid
+  status      ExchangeStatus @default(PENDING)
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+
+  leftBook  Book @relation(fields: [leftBookId], references: [id], name: "LeftBook")
   rightBook Book @relation(fields: [rightBookId], references: [id], name: "RightBook")
 }

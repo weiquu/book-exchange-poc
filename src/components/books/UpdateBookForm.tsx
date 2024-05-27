@@ -28,10 +28,15 @@ export default function UpdateBookForm({ book, onSubmit }: Props) {
   });
   const form = useForm({
     mode: "uncontrolled",
-    initialValues: { title: book.title, author: book.author },
+    initialValues: {
+      title: book.title,
+      author: book.author,
+      summary: book.summary,
+    },
     validate: {
       title: isNotEmpty("Enter a title"),
       author: isNotEmpty("Enter an author"),
+      summary: isNotEmpty("Enter a summary"),
     },
   });
 
@@ -39,6 +44,7 @@ export default function UpdateBookForm({ book, onSubmit }: Props) {
     updateBookMutation.mutateAsync({
       title: values.title,
       author: values.author,
+      summary: values.summary,
       id: book.id,
     });
   }
@@ -54,6 +60,11 @@ export default function UpdateBookForm({ book, onSubmit }: Props) {
         {...form.getInputProps("author")}
         label="Author"
         placeholder="Author"
+      />
+      <TextInput
+        {...form.getInputProps("summary")}
+        label="Summary"
+        placeholder="Enter a summary for the book"
       />
       <Button type="submit" mt="md">
         Submit

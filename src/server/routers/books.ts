@@ -26,6 +26,7 @@ export const booksRouter = router({
       z.object({
         author: z.string(),
         title: z.string(),
+        summary: z.string(),
         userId: z.string(),
       })
     )
@@ -34,6 +35,7 @@ export const booksRouter = router({
         data: {
           title: input.title,
           author: input.author,
+          summary: input.summary,
           listedById: input.userId,
         },
       });
@@ -45,6 +47,7 @@ export const booksRouter = router({
         id: z.string(),
         author: z.string(),
         title: z.string(),
+        summary: z.string(),
       })
     )
     .mutation(async ({ input }) => {
@@ -53,6 +56,7 @@ export const booksRouter = router({
         data: {
           title: input.title,
           author: input.author,
+          summary: input.summary,
         },
       });
       return book;

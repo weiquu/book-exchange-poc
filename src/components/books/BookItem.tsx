@@ -36,7 +36,7 @@ export default function BookItem({
       <Title order={3}>
         {book.title} by {book.author}
       </Title>
-      <Text size="sm">TODO: change schema to have book.summary</Text>
+      <Text size="sm">{book.summary}</Text>
       <Divider my="md" />
       {isOwnBook ? (
         <Group justify="space-between" mb="xs" mt="md">
