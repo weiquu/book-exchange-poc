@@ -1,36 +1,23 @@
 "use client";
 
-import { type ChangeEvent, useEffect, useState } from "react";
-
-import { trpc } from "../../hooks/trpc";
-
 import type { Book } from "@prisma/client";
-
 import BookItem from "./BookItem";
 
 import "@mantine/core/styles.css";
+import { Container } from "@mantine/core";
 
-import { Box, Text, Title } from "@mantine/core";
+type Props = Readonly<{
+  books?: Book[];
+}>;
 
-export default function BookList() {
-  // const [books, setBooks] = useState<Array<Book>>([]);
-  const { isLoading, data: books } = trpc.books.getAllListings.useQuery();
-
-  function sortByCreatedDate(a: Book, b: Book) {
-    return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
-  }
-
+export default function BookList({ books }: Props) {
+  // TODO: search and filter options
+  // TODO: pagination?
   return (
-    <Box m="lg">
-      <Title mb="md" order={2}>
-        Available Books for Exchange
-      </Title>
-      <Text hidden={!isLoading} size="md">
-        Loading...
-      </Text>
+    <Container>
       {books?.map((book) => (
         <BookItem key={book.id} book={book}></BookItem>
       ))}
-    </Box>
+    </Container>
   );
 }

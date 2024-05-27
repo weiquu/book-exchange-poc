@@ -4,6 +4,7 @@ import { Center, Container, Text, Paper, Anchor } from "@mantine/core";
 import LoginForm from "./LoginForm";
 import SignUpForm from "./SignUpForm";
 import { useState } from "react";
+import "@mantine/core/styles.css";
 import React from "react";
 
 type AuthType = "login" | "signUp";

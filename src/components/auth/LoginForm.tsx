@@ -5,6 +5,7 @@ import { Button, TextInput, PasswordInput } from "@mantine/core";
 import { isEmail, isNotEmpty, useForm } from "@mantine/form";
 import { trpc } from "../../hooks/trpc";
 import { useState, useEffect, use } from "react";
+import "@mantine/core/styles.css";
 import React from "react";
 
 export default function LoginForm() {

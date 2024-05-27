@@ -4,6 +4,7 @@ import { Button, TextInput, PasswordInput } from "@mantine/core";
 import { hasLength, isEmail, useForm } from "@mantine/form";
 import { trpc } from "../../hooks/trpc";
 import React from "react";
+import "@mantine/core/styles.css";
 
 export default function SignUpForm() {
   const createUserMutation = trpc.users.createUser.useMutation();
@@ -24,6 +25,7 @@ export default function SignUpForm() {
       password: values.password,
     });
 
+    // TODO: use onSuccess and onError in the mutation
     console.info("success", success);
     // TODO: redirect on success, show error message on failure
   }
