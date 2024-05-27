@@ -21,9 +21,9 @@ import {
 import ExchangeList from "./ExchangeList";
 
 export type ExchangeWithBookDetails = Exchange & {
-  leftBook: Book;
+  requestedBook: Book;
 } & {
-  rightBook: Book;
+  requesterBook: Book;
 };
 
 export default function BookListPage() {
@@ -49,10 +49,10 @@ export default function BookListPage() {
         <Tabs.Panel value="mine">
           <Stack m="lg" gap="md">
             <Grid gutter="md" align="center" justify="space-between">
-              <Grid.Col span={6}>
+              <Grid.Col span="content">
                 <Title order={2}>My Exchanges</Title>
               </Grid.Col>
-              <Grid.Col span={6} style={{ textAlign: "right" }}>
+              <Grid.Col span="content" style={{ textAlign: "right" }}>
                 <Switch
                   checked={showAllExchanges}
                   onChange={(event) =>
@@ -71,7 +71,7 @@ export default function BookListPage() {
             <ExchangeList
               exchanges={
                 exchanges?.filter(
-                  (exchange) => exchange.rightBook.listedById === user?.id
+                  (exchange) => exchange.requesterBook.listedById === user?.id
                 ) ?? []
               }
               userInitiatedExchange={true}
@@ -89,7 +89,7 @@ export default function BookListPage() {
             <ExchangeList
               exchanges={
                 exchanges?.filter(
-                  (exchange) => exchange.rightBook.listedById !== user?.id
+                  (exchange) => exchange.requesterBook.listedById !== user?.id
                 ) ?? []
               }
               userInitiatedExchange={false}

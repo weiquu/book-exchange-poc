@@ -28,14 +28,14 @@ export default function BookListPage() {
     return (
       <Stack m="lg" gap="md">
         <Grid gutter="md" align="center" justify="space-between">
-          <Grid.Col span={6}>
+          <Grid.Col span="content">
             <Title order={2}>
               {value === "all"
                 ? "All Books for Exchange"
                 : "My Books for Exchange"}
             </Title>
           </Grid.Col>
-          <Grid.Col span={6} style={{ textAlign: "right" }}>
+          <Grid.Col span="content">
             <Button onClick={open}>Add Book</Button>
           </Grid.Col>
         </Grid>

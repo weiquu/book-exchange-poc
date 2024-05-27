@@ -36,8 +36,8 @@ model Book {
 
   user User @relation(fields: [listedById], references: [id])
 
-  exchangesLeft  Exchange? @relation("LeftBook")
-  exchangesRight Exchange? @relation("RightBook")
+  exchangesRequested Exchange? @relation("requestedBook")
+  exchangesRequester Exchange? @relation("requesterBook")
 }
 
 enum ExchangeStatus {
@@ -47,13 +47,13 @@ enum ExchangeStatus {
 }
 
 model Exchange {
-  id          String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  leftBookId  String         @unique @db.Uuid
-  rightBookId String         @unique @db.Uuid
-  status      ExchangeStatus @default(PENDING)
-  createdAt   DateTime       @default(now())
-  updatedAt   DateTime       @updatedAt
+  id              String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  requestedBookId String         @unique @db.Uuid
+  requesterBookId String         @unique @db.Uuid
+  status          ExchangeStatus @default(PENDING)
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
 
-  leftBook  Book @relation(fields: [leftBookId], references: [id], name: "LeftBook")
-  rightBook Book @relation(fields: [rightBookId], references: [id], name: "RightBook")
+  requestedBook Book @relation(fields: [requestedBookId], references: [id], name: "requestedBook")
+  requesterBook Book @relation(fields: [requesterBookId], references: [id], name: "requesterBook")
 }

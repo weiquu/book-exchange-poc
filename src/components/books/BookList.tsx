@@ -74,7 +74,7 @@ export default function BookList({ books, userId }: Props) {
           opened={updateOpened}
           withCloseButton
           onClose={updateClose}
-          title="Add Book"
+          title="Update Book"
         >
           <UpdateBookForm book={selectedBook} onSubmit={updateClose} />
         </Modal>

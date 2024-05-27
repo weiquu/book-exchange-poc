@@ -13,13 +13,13 @@ export const exchangesRouter = router({
       const exchanges = await prisma.exchange.findMany({
         where: {
           OR: [
-            { leftBook: { listedById: input.userId } },
-            { rightBook: { listedById: input.userId } },
+            { requestedBook: { listedById: input.userId } },
+            { requesterBook: { listedById: input.userId } },
           ],
         },
         include: {
-          leftBook: true,
-          rightBook: true,
+          requestedBook: true,
+          requesterBook: true,
         },
       });
       return exchanges;
@@ -27,22 +27,22 @@ export const exchangesRouter = router({
   createExchange: publicProcedure
     .input(
       z.object({
-        leftBookId: z.string(),
-        rightBookId: z.string(),
+        requestedBookId: z.string(),
+        requesterBookId: z.string(),
       })
     )
     .mutation(async ({ input }) => {
       // TODO: if exchange offer exists for opposite direction, should auto accept
       const exchange = await prisma.exchange.create({
         data: {
-          leftBookId: input.leftBookId,
-          rightBookId: input.rightBookId,
+          requestedBookId: input.requestedBookId,
+          requesterBookId: input.requesterBookId,
           status: "PENDING",
         },
       });
       return exchange;
     }),
-  updateExchange: publicProcedure
+  updateExchangeStatus: publicProcedure
     .input(
       z.object({
         id: z.string(),
@@ -57,6 +57,34 @@ export const exchangesRouter = router({
         },
       });
       // TODO: if exchange is accepted, update books - isAvailable for both should be false
+      return exchange;
+    }),
+  updateExchangeBook: publicProcedure
+    .input(
+      z.object({
+        id: z.string(),
+        requesterBookId: z.string(),
+      })
+    )
+    .mutation(async ({ input }) => {
+      const exchange = await prisma.exchange.update({
+        where: { id: input.id },
+        data: {
+          requesterBookId: input.requesterBookId,
+        },
+      });
+      return exchange;
+    }),
+  deleteExchange: publicProcedure
+    .input(
+      z.object({
+        id: z.string(),
+      })
+    )
+    .mutation(async ({ input }) => {
+      const exchange = await prisma.exchange.delete({
+        where: { id: input.id },
+      });
       return exchange;
     }),
 });
